@@ -8,7 +8,7 @@ FILTER.ROWS.COLUMNS
 		tbla,ARRAY.PUSH(RECFILTERWRAPER(tbl,criteriarange),INDEX(tbl,1,)),
 		ExtractColumns(tbla, columnnames, withheader)
 	)
-)
+);
   
 //Push array one row down with extra one row to the top. Tow row with default value e.g. default={value1,value2,…}	
 
@@ -21,17 +21,18 @@ ARRAY.PUSH (WITH EXTRA ROW)
        		IF(Y<1,IFERROR(INDEX(D,1,X),""""),INDEX(Array,Y,X))
 	)
 
-)
+);
 
 //Push array one row down array size not changed. Last row removed. Top row with default values. E.g. default={value1,value2,…}
 
 ARRAY.PUSH (WITHOUT EXTRA ROW)	
 =LAMBDA(Array,Defaults,
-  LET(D,IF(COLUMNS(Defaults)>1,
-        INDEX(Defaults,1,0),TRANSPOSE(Defaults)),
-      X,SEQUENCE(1,COLUMNS(Array)), 
-     Y,SEQUENCE(ROWS(Array),1,0), 
-       IF(Y<1,IFERROR(INDEX(D,1,X),""""),INDEX(Array,Y,X))))
+  	LET(
+		D,IF(COLUMNS(Defaults)>1,INDEX(Defaults,1,0),TRANSPOSE(Defaults)),
+      	X,SEQUENCE(1,COLUMNS(Array)), 
+     	Y,SEQUENCE(ROWS(Array),1,0),IF(Y<1,IFERROR(INDEX(D,1,X),""""),INDEX(Array,Y,X))
+	)
+);
  
  
 //Wraper function for RECURSIVEFILTER Function	
@@ -45,6 +46,6 @@ RECFILTERWRAPER
 		filterval,INDEX(filterrange,2,),
 		RECURSIVEFILTER(INDEX(tableall,2,1):INDEX(tableall,ROWS(tbl),COLUMNS(tableall)),filterhd,filterval)
 	)
-)	
+);	
 
 
